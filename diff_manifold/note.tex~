@@ -1,0 +1,344 @@
+\documentclass[11pt,a4paper]{ctexbook}
+\input{macros.tex}
+\graphicspath{{figure/}}
+\usepackage{enumerate}
+%\usepackage{fancyhdr}
+%\cpic{<尺寸>}{<文件名>}}用于生成居中的图片。
+\newcommand{\cpic}[2]{
+\begin{center}
+\includegraphics[scale=#1]{#2}
+\end{center}
+}
+%\cpicn{<尺寸>}{<文件名>}{<注释>}用于生成居中且带有注释的图片，其label为图片名。
+\newcommand{\cpicn}[3]
+{
+\begin{figure}[H]
+\cpic{#1}{#2}
+\caption{\color{red}#3\label{#2}}
+\end{figure}
+}
+
+\newtheorem{definition}{\hspace{2em} 定义}[section]
+\newtheorem{practice}{\hspace{2em} 练习}[section]
+\newtheorem{theorem}{\hspace{2em} 定理}[section]
+\title{微分几何笔记}
+\author{徐昊霆}
+\begin{document}
+\begin{titlepage} % Suppresses headers and footers on the title page
+
+	\raggedleft % Right align everything
+	
+	\vspace*{\baselineskip} % Whitespace at the top of the page
+	
+	%------------------------------------------------
+	%	Author
+	%------------------------------------------------
+	
+	{\Large 徐昊霆} % Author name
+	
+	\vspace*{0.167\textheight} % Whitespace before the title
+	
+	%------------------------------------------------
+	%	Title and subtitle
+	%------------------------------------------------
+	
+	\textbf{\LARGE A Note of}\\[\baselineskip] % First title line
+	
+	{\textcolor{red}{\Huge Differentiable Manifold}}\\[\baselineskip] % Main title line which draws the focus of the reader
+	
+	{\Large \textit{For Physicists}} % Subtitle
+	
+	\vfill % Whitespace between the titles and the publisher
+	
+	%------------------------------------------------
+	%	Publisher
+	%------------------------------------------------
+	
+	{\large SPA, SYSU} % Publisher and logo
+	
+	\vspace*{3\baselineskip} % Whitespace at the bottom of the page
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+\chapter{微分流形与张量场}
+\section{微分流形}\index{manifold}
+\begin{definition}[开覆盖]
+  一集合$X$的开子集的集合$\{O_\alpha\}$叫做$A\subset X$的一个开覆盖(open cover)，如果$A\subset \cup_\alpha O_\alpha$，也可以说$\{O_\alpha\}$覆盖了$A$。
+\end{definition}
+\begin{definition}[ $n$维微分流形]
+  
+  对于拓扑空间$(M,\mathcal{T})$，如果$M$有开覆盖$\{O_\alpha\}$，$M\subset \cup_\alpha O_\alpha$,满足
+  
+  (a) 存在同胚映射$\psi_\alpha: O_\alpha \rightarrow V_\alpha$($V_\alpha$是$\mathbb{R}^n$用通常拓扑衡量的开子集)
+  
+  (b) $O_\alpha \cap O_\beta \ne \varnothing$, 则复合映射$\psi_\beta \circ \psi_\alpha^{-1}$(如图~\ref{manifold})是光滑的。
+  
+  则称拓扑空间$(M,\mathcal{T})$为$n$维微分流形，简称$n$维流形。
+  
+\end{definition}
+\cpicn{0.5}{manifold}{微分流形的定义}
+
+简单来说，开覆盖是很多小开集的集合，这些小开集把整个集合铺满了。现在又在每个小开集上定义了一个坐标网，即上面定义的同胚映射，把定义了坐标网的拓扑空间叫做微分流形。一个形象的比喻如图所示，如果把集合比作鱼，那么开集就是鱼身上的鳞片，开覆盖就是鱼身上鳞片的集合，如果每两个包含同一点的鳞片，那么就说鱼的表皮是连续的。如果在每一个鳞片上画一系列坐标网(即把每一点映射到2维数组上)，那么鱼的表面就是一个二维微分流形。\footnote{这个比喻来源于我的一位很好的朋友，他是一个小恐龙爱好者。原来的比喻是恐龙上的鳞片。}
+\cpicn{0.4}{fish}{鱼和鱼的鳞片}
+\section{流形上的切矢量}
+我们先来定义流形上的标量场。
+\begin{definition}[流形上的标量场]
+  流形$\mathcal{M}$上的标量场是映射$f:\mathcal{M}\rightarrow \mathbb{R}$，即将流形上的一个点$p$映射到一个实数$f(p)$。流形$\mathcal{M}$上所有标量场的集合记为$\mathcal{F}_{\mathcal{M}}$
+\end{definition}
+例如，温度、压强、质量密度、电荷密度、高斯曲率等等，都是从一个点到实数轴上的映射，因此都是标量场。
+
+有了流形上的标量场，我们来定义流形$\mathcal{M}$上点$p$的切矢量。
+\begin{definition}[流形上某一点的{\color{red} 切矢量}]
+  流形$\mathcal{M}$上点$p$的切矢量是标量场到实数的映射。即$X_p:\mathcal{F}_{\mathcal{M}}\rightarrow \mathbb{R}$，并且满足
+  \begin{itemize}
+  \item $X_p$是线性映射，即
+    \be
+    X_p(\alpha f +\beta g) =\alpha X_p(f) + \beta X_p(g)
+    \ee
+    其中$\alpha,\beta \in \mathbb{R}$。
+  \item 满足莱布尼茨律
+    \be
+    X_p(fg) = f(p)X_p(g)+g(p)X_p(f)
+    \ee
+  \end{itemize}
+\end{definition}
+\begin{practice}
+  利用切矢量的定义证明
+  \begin{enumerate}
+  \item $X_p(1) = 0$
+  \item $X_p(c) =0$
+  \item $X_p(\alpha f) = \alpha X_p (f)$
+  \end{enumerate}
+\end{practice}
+\section{切空间--流形上的切矢量形成线性空间}
+上面我们定义了切矢量是流形上标量场到实数轴的线性、满足莱布尼茨律的映射。在切矢量定义的基础上定义切矢量的加法和数乘，可以定义切空间\footnote{顾名思义，切矢量所形成的空间}，记为$T_p\mathcal{M}$，意为流形上$p$点的切空间。
+\begin{definition}[切矢量的线性运算]
+  定义切矢量的加法为
+  \be
+  (X_p+Y_p)(f) = X_p(f) + Y_p(f)
+  \ee
+  存在一个特殊的$0_p\in T_p\mathcal{M}$,使得对于任意$f\in\mathcal{F}_{\mathcal{M}}$有$0_p(f) =0$，切矢量的数乘定义为
+  \be
+  (\alpha X_p)(f) = \alpha X_p(f)
+  \ee
+\end{definition}
+应当注意对数乘定义的解读，$(\alpha X_p)$整体表示一个映射，它接收一个标量场$f$，作用效果是先将$f$给$X_p$作用，再乘以实数$\alpha$。因此，通过定义加法和数乘，我们把切矢量组成了一个线性空间，被叫做切空间。
+\section{余切空间--切空间的对偶空间}
+先补充一下什么是对偶空间。
+\begin{definition}[对偶空间]
+  线性空间$V$的对偶空间$V^*$是$V$上所有线性函数的集合。定义线性函数之间的加法和数乘也满足线性的关系
+  \be
+  (\alpha f+\beta g)(v) = \alpha f(v) + \beta g(v)
+  \ee
+\end{definition}
+现在给线性空间$V$选择一组基底$\{e_1,\cdots,e_n \}$，这里面的$n$称为线性空间的维数，记作$n = \mathrm{dim} V$。定义一种特殊的线性函数$e^{i}$，使得
+\be
+e^i(e_j) = \delta^i_j
+\ee
+显然，可以证明，所有的线性函数都可以用$e^{i}$线性表示。所以说，$\{e^1,\cdots,e^n \}$构成对偶空间的一组基底。于是，线性空间和它的对偶空间是同维的。
+
+现在我们定义切空间的对偶空间--余切空间。记余切空间为$T_p^*\mathcal{M}$，记余切空间中的元素为$df_p:T_p\mathcal{M}\rightarrow \mathcal{R}$，按照对偶空间的定义，$df_p$应该是切矢量的线性映射
+\be
+df_p(\alpha X_p + \beta Y_p ) = \alpha df_p (X) + \beta df_p(Y)
+\ee
+因此，找到一种线性映射就可以了，我们定义
+\begin{definition}[余切矢量]
+  余切矢量$df_p$的定义为
+\be\label{cot:def}
+df_p(X_p) \equiv X_p(f)
+\ee
+\end{definition}
+为了证明它确实是一个对偶空间的矢量，我们证明它对作用的元素线性，并证明映射本身是线性的：首先证明对元素的线性，对于两个切矢量$X_p,\,Y_p$,有
+\be
+df_p(X_p+Y_p) =(X_p+Y_p)(f) = X_p(f)+Y_p(f) = df_p(X_p)+df_p(Y_p)
+\ee
+得证。再证明余切空间元素本身是线性的
+\be
+(df_p+ dg_p)(X_p) = X_p(f+g) = X_p(f)+X_p(g) = df_p(X_p) + dg_p(X_p)
+\ee
+可见上面的定义式~\ref{cot:def}满足对偶空间的条件。应当指出的是，我们把余切空间中的元素定义$df_p$，并不意味着它是标量场的微分，而只是一种记号，虽然我们将看到它确实是某种微分。
+\section{切空间上的张量}
+\subsection{切空间上张量的定义}
+\begin{definition}[线性空间上的张量]
+  对于一般的线性空间$V$，如果它的对偶空间为$V^*$，那么线性空间上的(s,t)型定义为一个$s+t$元多重线性函数(对每一个自变量呈线性)，即
+  \be
+  T: \underbrace{V\times V\times \cdots \times V}_{s} \times \underbrace{V^*\times V^*\times \cdots \times V^*}_{t}
+  \ee
+\end{definition}
+将一般的线性空间换成我们的切空间，得到切空间上张量的定义。即多重线性函数$T(X_1,\cdots,X_s; df_1,\cdots ,df_t)$。利用$\mathcal{T}_V(s,t)$表示全体$(s,t)$型张量的集合。
+\begin{definition}[张量积]
+  $V$上的$(s,t)$和$(s^{\prime},t^{\prime})$型张量$T$和$T^{\prime}$的张量积$T\otimes T^{\prime}$是一个$(s+s^{\prime},t+t^{\prime})$型张量，定义为
+  \be
+  \begin{aligned}
+    &T\otimes T^{\prime} \left(v_1,\cdots,v_l,v_{l+1},\cdots, v_{l+l^\prime};\omega^1,\cdots, \omega^k;\omega^{k+1},\cdots,\omega^{k+k^\prime}\right) \\
+    & = T\left(v_1,\cdots,v_l,v_{l+1};\omega^1,\cdots, \omega^k\right)T^{\prime}\left(v_{l+1},\cdots, v_{l+l^\prime};\omega^{k+1},\cdots,\omega^{k+k^\prime}\right)
+  \end{aligned}
+  \ee
+\end{definition}
+\begin{theorem}
+  \mathcal{T}_V(s,t)是向量空间，它的维数为$\mathrm{dim} (s,t) = n^{s+t}$
+\end{theorem}
+证明略。
+
+度规张量是切空间$T_p\mathcal{M}$上的一个$(2,0)$型对称张量，即它接收两个切矢量并返回一个实数，它是通过两个切矢量的内积定义的
+\be
+\langle X,Y\rangle \equiv g(X,Y)
+\ee
+回忆线性空间上内积的定义\footnote{注意这个内积的定义是内积满足可交换、线性、正定，并不是高中学过的坐标相乘。}，我们得到度规需要满足$g(X,Y) = g(Y,X)$，这时由内积的可交换性质给出的。对于内积永远大于等于零这一点，我们在这里予以舍弃，即我们不要求切矢量的内积是正定的。物理上，这对应于相对论中的时空间隔可以为负。如果说$\forall X \in T_p\mathcal{M}$都有$g(X,X)>0$,则称具有这种度规的流形为{\color{red}黎曼流形}。
+
+应当注意，在之前我们都是抽象地去讨论一个流形上的切矢量、余切矢量、切空间、余切空间，有了内积的定义，我们才能对流形的“形状”有某种感觉。
+\subsection{度规张量给出的余切矢量}
+\begin{definition}[切矢量自然对应的余切矢量]
+  如果流形$\mathcal{M}$装备了度规$g$,映射$g_X(Y)\equiv g(X,Y)$，由于内积的线性性质，可以知道$g_X$是切空间到实数轴的线性映射，即余切矢量。所以称$g_X$是切矢量$X$自然对应的余切矢量。
+\end{definition}
+\section{用坐标来表示上面的定义}
+我们知道流形$\mathcal{M}$上定义了一个开集$O$，上面定义了一个到$\mathbb{R}^n$的映射$\psi$，叫做局部坐标。
+\begin{definition}[图]
+  结构$(O,\psi)$称作图。一个点上所有图的集合叫做图册。
+\end{definition}
+两个重叠的图有坐标变换$\psi_b\circ \psi_a^{-1}: \mathbb{R}^n\rightarrow \mathbb{R}^n$，如果这个映射在流形上处处光滑，那么流形就叫做光滑的。
+
+有了流形上点的局域坐标，我们便可以把流形上的点映射到$n$维数组上去。也就是说
+\beq
+p\rightarrow \left(x^1,\cdots ,x^n\right)
+\eeq
+\subsection{标量场的表象}
+我们之前学过，标量场是流形上点到实数轴的映射，而现在流形上的点又通过局域坐标$\psi$映射到$n$维数组上，那么我们可以建立一个点的局域坐标直接到实数轴上的映射，记为$F$，故有
+\beq
+F\equiv f\circ \psi^{-1}
+\eeq
+可见$F$和$f$的联系，无非一个是把坐标映射到实数轴，而另一个是把抽象的点映射到实数轴。在今后讨论的，选好局域坐标的情况，读者可以不考虑$F,f$的区别。
+\subsection{切矢量和余切矢量的分量}
+回顾切矢量的定义，切矢量是标量场场到实数轴的映射。我们考虑算符
+\beq
+\partial_\mu (f) \equiv \frac{\partial F}{\partial x^{\mu}}
+\eeq
+证明上面的算符是切矢量，即证明它们满足线性和莱布尼茨律。考虑两个标量场相乘
+\beq
+\partial_\mu (fg) = \partial_\mu (FG) = G\partial_\mu F+F\partial_\mu G = g\partial_\mu f + f\partial_\mu g
+\eeq
+从而可以证明它们满足莱布尼茨律。线性的证明和上面类似。
+\begin{theorem}[切矢量的基]
+  所有的切矢量都可以用$\partial_\mu$唯一的线性表示，即
+  \beq
+  X = X^{\mu}\partial_\mu
+  \eeq
+\end{theorem}
+从而$\partial_\mu$张成$T_p\mathcal{M}$。这个定理的证明十分困难，证明终止。有了切矢量的基，我们就可以定义余切矢量的基，回顾切矢量和余切矢量的定义
+\beq
+X_p(f) = df(X)
+\eeq
+考虑一个特殊的标量场，即$p$点的第$\nu$个坐标$x^\nu$，我们试图定义$dx^\mu$使得
+\beq
+\partial_\mu (x^\nu) = dx^\nu(\partial_\mu ) = \delta^{\nu}_{\mu}
+\eeq
+上面$dx^{\mu}$的定义是微分的正式定义，彻底解决了“无穷小”概念含糊不清的问题。因为每一个切矢量都可以用基来表示，自然地想到每一个余切矢量也可以用基来表示，我们大胆猜测有定理
+\begin{theorem}[余切矢量的基]
+  任意一个余切矢$df\in T_p^{*}\mathcal{M}$可以进行展开$df = f_\nu dx^{\nu}$。
+\end{theorem}
+证明略。考虑一个一般的余切矢量$df$，按照定义有
+\beq
+df(\partial_\mu) = \partial_\mu (f)
+\eeq
+另一方面，把这个余切矢量展开，则有
+\beq
+df(\partial_\mu) = (f_\nu dx^{\nu})(\partial_\mu) = f_\mu
+\eeq
+于是，有
+\beq
+f_\mu = \partial_\mu (f) = df(\partial_\mu)
+\eeq
+上面的式子可以这样解读:{\color{blue} 余切矢量$df$作用在切矢量的基上得到余切矢量在坐标下的表象}。
+
+我们前面说过，切矢量是标量场到实数轴的映射，但是我们也可以不喂给它一个标量场，我们也可以喂给它一个余切矢量，定义喂给它一个余切矢量等效于喂给它一个标量场，即
+\beq
+X(df)\equiv X(f)
+\eeq
+这不禁让我们思考，余切矢量和标量场是不是一一对应的呢?这个问题留给读者去探索。如果我们引入上面的定义，我们就会得到上面类似的解读:{\color{blue} 切矢量$X$作用在余切矢量的基上得到切矢量在坐标下的分量}。
+\begin{practice}
+  写出上面解释对应的公式。
+\end{practice}
+
+\subsection{张量的分量}
+回顾张量的定义，张量是$s$个切矢量和$t$个余切矢量到实数轴的映射，并且满足多重线性的要求，把每个切矢量和余切矢量按照基展开，有
+\beq
+T(X_1,\cdots, X_s; df^1,\cdots ,df^t) = X_1^{\mu_1}\cdots X_s^{\mu_s}f_{1\nu_1}\cdots f_{t\nu_t} T\left(\partial_{\mu 1},\cdots \partial_{\mu s}; dx^{\nu 1},\cdots , dx^{\nu_t}\right)
+\eeq
+记
+\beq
+T^{\nu_1\cdots \nu_t}_{\mu_1\cdots \mu_s} \equiv T\left(\partial_{\mu 1},\cdots \partial_{\mu s}; dx^{\nu 1},\cdots , dx^{\nu_t}\right)
+\eeq
+称为张量在给定坐标下的分量。{\color{blue} 因此，张量作用在$s$个切矢量的基和$t$个余切矢量的基上得到了张量在坐标系下的分量。}\footnote{读者可以把蓝色的字读一遍，体会这里边的关系。} 于是，原来复杂的映射就直接变成了坐标分量的简单的相乘。
+
+在前面我们学过一种特殊的张量，它是通过内积来定义的，叫做度规张量。回顾度规张量的定义
+\beq
+g(X,Y) = \langle X,Y\rangle
+\eeq
+它的分量为
+\beq
+g_{\mu\nu} = g(\partial_\mu, \partial_\nu)
+\eeq
+于是，和上面的张量类似，这样一个抽象的映射就写成对应分量的乘积并求和
+\beq
+\langle X,Y\rangle = g_{\mu\nu} X^{\mu}Y^\nu
+\eeq
+定义一个新的余切矢量(其实在前面定义过，称为切矢量自然对应的余切矢量)，它接收一个切矢量$Y$，使得
+\beq
+g_X(Y) = g(X,Y)
+\eeq
+它的坐标分量为:给这个余切矢量传进去切矢量的基
+\beq
+g_X(Y)_\nu = g(X,\partial_\nu) = g(X^{\mu}\partial_{\mu},\partial_\nu) = g_{\mu\nu} X^{\mu}
+\eeq
+在不引起歧义的情况下，定义$X_\nu = g_X(Y)_\nu$，它是我们新定义的余切矢量的坐标分量。
+
+从上面的论述我相信你体会到了重要的一点:{\color{blue} 矢量、张量这些东西本来没有分量，就是一个抽象的映射在那里，但是因为有了坐标，它才有了分量。也就是说，矢量本来不是什么有方向的量，有了坐标之后，才能有方向}。\footnote{这种观念非常漂亮，想下去说不定搞出一种深刻的哲学。我把想象空间留给读者。}
+
+\subsection{度规的逆、张量指标的升降}
+刚刚我们定义了一个新的余切矢量$g_X(Z)$，它接收一个切矢量$Z$，现在我们定义一个新的张量$h$，它把两个刚刚的余切矢量映射到实数，并且有
+\beq
+h(g_X,g_Y) = g(X,Y)
+\eeq
+$h$就定义了切空间上的内积。
+\begin{practice}
+  证明上面的定义是一种内积。即证明它的可交换、线性。
+\end{practice}
+\begin{practice}
+  证明上面的定义$h(g_X,g_Y) = g(X,Y)$等价为
+  \be
+  g_{\rho\sigma}h^{\sigma \nu} = \delta_{\rho}^{\spa \nu}
+  \ee
+  即在矩阵意义下，$h$的坐标分量矩阵是$g$坐标分量矩阵的逆矩阵。所以通常逆矩阵的分量$h^{\mu\nu}$可以记作$g^{\mu\nu}$，而不引起歧义。
+  \end{practice}
+
+张量也有类似的升降指标公式。举个例子，我们考虑张量$T(X_1,X_2,{\color{red} df^1},df^2)$和张量$S(Y_1,Y_2,d\varphi^1,{\color{red}d\varphi^2})$。它们的坐标分量分别为$T_{ij}^{{\color{red}l}k} =T(\partial_i,\partial_j,dx^{\color{red} l},dx^k), \, S_{mn}^{p{\color{red} q}} = S(\partial_m,\partial_n,dx^p,dx^{\color{red} q})$，我们将$T$的第三个指标和$S$的第四个指标缩并，从而定义一个6阶张量,它的分量为
+\beq
+G\left(\partial_i,\partial_j,dx^l,\partial_k,\partial_m,dx^n\right) = g\left(\partial_\mu,\partial_\nu\right)T(\partial_i,\partial_j,{\color{red}dx^\mu},dx^l)S(\partial_k,\partial_m,dx^n,{\color{red} dx^\nu})
+\eeq
+我们定义一个新的张量，它的分量为
+\beq
+T^{\prime}(\partial_i,\partial_j,\partial_\nu,dx^l)= g\left(\partial_\mu,\partial_\nu\right) T(\partial_i,\partial_j,{\color{red}dx^\mu},dx^l)
+\eeq
+写成上下指标有
+\beq
+T^{\prime l}_{ij\nu }  = g_{\mu\nu} T_{ij}^{\mu l}
+\eeq
+如果不引起歧义，那么可将$T^{\prime}$记为$T$。
+
+上面的论述比较繁杂，看不懂也没关系，总之就告诉大家一般来说上下标的定义是通过这样来定义的。都是通过构造更少指标的张量。
+
+\section{场}
+我们之前在流形上每一点都定义了矢量和张量。简单地说，如果在流形上处处定义了场，那么我们就说定义了一个矢量场、张量场。数学上，我们作如下定义
+\begin{definition}[矢量场]
+  流形$\mathcal{M}$上的矢量场$X$定义为光滑标量场之间的映射
+  \beq
+  X: C_{\mathcal{M}}^{\infty} \rightarrow C_{\mathcal{M}}^{\infty}
+  \eeq
+\end{definition}
+上面的定义实际上很好理解，我们知道流形上一个矢量实际上是标量场到实数轴上的映射，也就是说，一个矢量是一个映射，吃掉一个标量，吐出一个实数。那么如果矢量到处吃标量，把每一点的标量都吃了，那么它在每一点都吐出一个实数，这些实数又构成了一个标量场。所以说矢量场就是标量场到标量场的映射。
+
+
+
+\end{document}
