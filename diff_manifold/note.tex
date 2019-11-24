@@ -21,6 +21,7 @@
 \newtheorem{definition}{\hspace{2em} 定义}[section]
 \newtheorem{practice}{\hspace{2em} 练习}[section]
 \newtheorem{theorem}{\hspace{2em} 定理}[section]
+\newtheorem{problem}{\hspace{2em} 习题}[chapter]
 \title{微分几何笔记}
 \author{徐昊霆}
 \begin{document}
@@ -80,7 +81,7 @@
 \end{definition}
 \cpicn{0.5}{manifold}{微分流形的定义}
 
-简单来说，开覆盖是很多小开集的集合，这些小开集把整个集合铺满了。现在又在每个小开集上定义了一个坐标网，即上面定义的同胚映射，把定义了坐标网的拓扑空间叫做微分流形。一个形象的比喻如图所示，如果把集合比作鱼，那么开集就是鱼身上的鳞片，开覆盖就是鱼身上鳞片的集合，如果每两个包含同一点的鳞片，那么就说鱼的表皮是连续的。如果在每一个鳞片上画一系列坐标网(即把每一点映射到2维数组上)，那么鱼的表面就是一个二维微分流形。\footnote{这个比喻来源于我的一位很好的朋友，他是一个小恐龙爱好者。原来的比喻是恐龙上的鳞片。}
+简单来说，开覆盖是很多小开集的集合，这些小开集把整个集合铺满了。现在又在每个小开集上定义了一个坐标网，即上面定义的同胚映射，把定义了坐标网的拓扑空间叫做微分流形。一个形象的比喻如图所示，如果把集合比作鱼，那么开集就是鱼身上的鳞片，开覆盖就是鱼身上鳞片的集合，如果每两个包含同一点的鳞片，那么就说鱼的表皮是连续的。如果在每一个鳞片上画一系列坐标网(即把每一点映射到2维数组上)，那么鱼的表面就是一个二维微分流形。%\footnote{这个比喻来源于我的一位很好的朋友，他是一个小恐龙爱好者。原来的比喻是恐龙上的鳞片。}
 \cpicn{0.4}{fish}{鱼和鱼的鳞片}
 \section{流形上的切矢量}
 我们先来定义流形上的标量场。
@@ -167,7 +168,7 @@ df_p(X_p+Y_p) =(X_p+Y_p)(f) = X_p(f)+Y_p(f) = df_p(X_p)+df_p(Y_p)
   T: \underbrace{V\times V\times \cdots \times V}_{s} \times \underbrace{V^*\times V^*\times \cdots \times V^*}_{t}
   \ee
 \end{definition}
-将一般的线性空间换成我们的切空间，得到切空间上张量的定义。即多重线性函数$T(X_1,\cdots,X_s; df_1,\cdots ,df_t)$。利用$\mathcal{T}_V(s,t)$表示全体$(s,t)$型张量的集合。
+将一般的线性空间换成我们的切空间，得到切空间上张量的定义。即多重线性函数$T(X_1,\cdots,X_s; df_1,\cdots ,df_t)$。利用$\mathcal{T}_V(s,t)$表示全体$(s,t)$型张量的集合。按照这种映射的观点，$(1,0)$型张量接收一个切矢量将它映射到一个数，因此$(1,0)$型张量是一个余切矢量；$(0,1)$型张量接收一个余切矢量将它映射到一个数，因此$(0,1)$型张量是一个切矢量。
 \begin{definition}[张量积]
   $V$上的$(s,t)$和$(s^{\prime},t^{\prime})$型张量$T$和$T^{\prime}$的张量积$T\otimes T^{\prime}$是一个$(s+s^{\prime},t+t^{\prime})$型张量，定义为
   \be
@@ -296,6 +297,16 @@ g_X(Y)_\nu = g(X,\partial_\nu) = g(X^{\mu}\partial_{\mu},\partial_\nu) = g_{\mu\
 
 从上面的论述我相信你体会到了重要的一点:{\color{blue} 矢量、张量这些东西本来没有分量，就是一个抽象的映射在那里，但是因为有了坐标，它才有了分量。也就是说，矢量本来不是什么有方向的量，有了坐标之后，才能有方向}。\footnote{这种观念非常漂亮，想下去说不定搞出一种深刻的哲学。我把想象空间留给读者。}
 
+\subsection{张量的基底}
+举个例子，如果我们取两个切矢量，即两个$(0,1)$型张量，它们可以表示为
+\beq
+f = f^\mu \partial_\mu,\spa g = g^\mu\partial_\mu
+\eeq
+其中$\partial_\mu$和$\partial_\mu$，所以张量积可以表示为
+\beq
+T(df^1,df^2) = f^{\mu} g^{\nu} \partial_\mu(df^1) \otimes \partial_\nu(df^2)
+\eeq
+显然，如果$f^1,f^2$是余切空间的基底，那么就得到了张量$T$的分量。我们刚刚看到，两个$(0,1)$型张量通过张量积得到了一个$(0,2)$型张量。肯定可以证明，任何$(0,2)$型张量的基底都是$\partial_\mu \otimes \partial_\nu$，如果流形上切矢量的基底为$\partial_\mu$。可以把上面张量的基底的论述推广到任意$(s,t)$型张量。读者不妨试试。
 \subsection{度规的逆、张量指标的升降}
 刚刚我们定义了一个新的余切矢量$g_X(Z)$，它接收一个切矢量$Z$，现在我们定义一个新的张量$h$，它把两个刚刚的余切矢量映射到实数，并且有
 \beq
@@ -312,32 +323,120 @@ $h$就定义了切空间上的内积。
   \ee
   即在矩阵意义下，$h$的坐标分量矩阵是$g$坐标分量矩阵的逆矩阵。所以通常逆矩阵的分量$h^{\mu\nu}$可以记作$g^{\mu\nu}$，而不引起歧义。
   \end{practice}
+我们简单的回顾一下:切矢量接收一个余切矢量得到一个实数，它的基底是下标，而它的坐标分量是上标；余切矢量接收一个切矢量得到一个实数，它的基底是上标，它的坐标分量是下标。$(s,t)$型张量接收$s$个切矢量和$t$个余切矢量，它的基底是$s$个余切矢量(上标)的基底和$t$个切矢量(下标)的基底，于是它的系数是$s$个下标。读者闲着没事睡觉的时候可以回顾一下这段。
+\subsection{张量指标的缩并}
+\begin{definition}[张量的缩并]
+  对于一个$(s,t)$型张量$T\in\mathcal{T}_V(s,t)$的第$i$个下标与第$j$个上标的缩并定义为
+  \beq
+  C_i^j \left[T\right]=T(\cdots, \partial_\mu,\cdots ;\cdots,dx^{\mu},\cdots)\in \mathcal{T}(s-1,t-1)
+  \eeq
+\end{definition}
+可以证明，$C_i^j T$与坐标选取无关。
+\begin{practice}
 
-张量也有类似的升降指标公式。举个例子，我们考虑张量$T(X_1,X_2,{\color{red} df^1},df^2)$和张量$S(Y_1,Y_2,d\varphi^1,{\color{red}d\varphi^2})$。它们的坐标分量分别为$T_{ij}^{{\color{red}l}k} =T(\partial_i,\partial_j,dx^{\color{red} l},dx^k), \, S_{mn}^{p{\color{red} q}} = S(\partial_m,\partial_n,dx^p,dx^{\color{red} q})$，我们将$T$的第三个指标和$S$的第四个指标缩并，从而定义一个6阶张量,它的分量为
+  \begin{enumerate}[(1)]
+  \item 试证明$C\left[v\otimes \omega\right] = \omega_\mu v^{\mu},\spa \forall v \in V, \omega \in V^*$
+  \item 试证明$C_2^1\left[T\otimes v\right] = T(\circ,v),\spa \forall v\in V, T\in \mathcal{T}_V(2,0)$
+  \item 接上题，试证明$g_X(Y) = C_2^1\left[g\otimes X\right](Y) = g(X,Y)$
+  \end{enumerate}
+\end{practice}
+有了上面的定义，也可以定义张量指标的升降。举个例子，考虑两个张量$T = T_{\mu\nu}^\sigma dx^{\mu}\otimes dx^\nu \otimes \partial_\sigma$和$S = S_{\mu\nu}^\sigma dx^{\mu}\otimes dx^\nu \otimes \partial_\sigma$，定义一个新的$T^\prime$使得
 \beq
-G\left(\partial_i,\partial_j,dx^l,\partial_k,\partial_m,dx^n\right) = g\left(\partial_\mu,\partial_\nu\right)T(\partial_i,\partial_j,{\color{red}dx^\mu},dx^l)S(\partial_k,\partial_m,dx^n,{\color{red} dx^\nu})
+C_1^1\left[g\otimes T\right]\otimes C_2^1\left[g\otimes S\right]=C^1_3\left[T^{\prime}\otimes S\right]
 \eeq
-我们定义一个新的张量，它的分量为
-\beq
-T^{\prime}(\partial_i,\partial_j,\partial_\nu,dx^l)= g\left(\partial_\mu,\partial_\nu\right) T(\partial_i,\partial_j,{\color{red}dx^\mu},dx^l)
-\eeq
-写成上下指标有
-\beq
-T^{\prime l}_{ij\nu }  = g_{\mu\nu} T_{ij}^{\mu l}
-\eeq
-如果不引起歧义，那么可将$T^{\prime}$记为$T$。
-
-上面的论述比较繁杂，看不懂也没关系，总之就告诉大家一般来说上下标的定义是通过这样来定义的。都是通过构造更少指标的张量。
+原来的$T$是一个$(2,1)$型张量，通过这样的定义，$T$变成了一个$(3,0)$型张量。
+\begin{practice}
+  通过给上面的定义投食所需要的基底，证明著名的指标升降公式
+  \beq
+  T_{\mu\nu\rho} = g_{\rho\sigma} T^\sigma_{\mu\nu}
+  \eeq
+\end{practice}
 
 \section{场}
-我们之前在流形上每一点都定义了矢量和张量。简单地说，如果在流形上处处定义了场，那么我们就说定义了一个矢量场、张量场。数学上，我们作如下定义
+\subsection{矢量场的定义}
+我们之前在流形上每一点都定义了矢量和张量。我们知道矢量就是标量到实数轴的映射，余切矢量是切矢量到实数轴的映射。而矢量还可以理解为余切矢量到实数轴的映射。我们之前说过标量场就是流形上每一个点到实数轴的映射。现在我们试图定义矢量场的概念，我们直接将上面的“标量、矢量”等词汇替换成“标量场、矢量场”。那么词汇“实数轴”应该怎么替换呢?
+
+数学上，我们作如下定义
 \begin{definition}[矢量场]
   流形$\mathcal{M}$上的矢量场$X$定义为光滑标量场之间的映射
   \beq
-  X: C_{\mathcal{M}}^{\infty} \rightarrow C_{\mathcal{M}}^{\infty}
+  X: f\rightarrow X(f) ,\spa f,X(f)\in C^\infty
   \eeq
 \end{definition}
 上面的定义实际上很好理解，我们知道流形上一个矢量实际上是标量场到实数轴上的映射，也就是说，一个矢量是一个映射，吃掉一个标量，吐出一个实数。那么如果矢量到处吃标量，把每一点的标量都吃了，那么它在每一点都吐出一个实数，这些实数又构成了一个标量场。所以说矢量场就是标量场到标量场的映射。
+
+\subsection{矢量场对易子与李导数}
+考虑两个矢量的复合，即将一个标量场通过矢量场$X$映射到另一个标量场，再将这个新产生的标量场通过另一个矢量场$Y$映射产生又一个新的标量场$(Y\circ X)(f)$。还记得如果一个映射是矢量场，它还需要满足线性和莱布尼茨律。考虑
+\beq
+\begin{aligned}
+  (X\circ Y)(fg) &= X(Y(fg)) = X(fY(g)+gY(f))\\
+  &= X(f)Y(g) + fX(Y(g))+X(g)Y(f) + gX(Y(f))\\
+  &\ne fX(Y(g))+gX(Y(f))
+\end{aligned}
+\eeq
+将$X,Y$的位置调换并相减，可以证明$[X,Y] = XY-YX$是矢量场。可以验证，对易子的坐标表象为
+\beq
+    [X,Y] = (X^{\mu}\partial_{\mu}Y^\nu - Y^\mu \partial_\mu X^\nu)\partial_\nu
+\eeq
+
+如果我们固定$X$变化$Y$，就得到了一个矢量场到矢量场的映射
+\beq
+\mathcal{L}_X(Y) = [X,Y]
+\eeq
+$\mathcal{L}_X$又被称作李导数。
+
+同理，我们还可以定义余切矢量场和标量场。我累了，定义终止。
+\subsection{局部坐标变换}
+我们之前通过在流形上的开子集引入坐标$x^\mu$，从而引入了切空间的基$\partial_\mu$，现在在同一地点，考虑另一个开子集而引入的另一组坐标$u^\nu$，那么它也会定义切空间的一组基$\partial /\partial u^{\nu}$，这两组坐标之间如何变换?
+
+回顾一下切空间上的切矢量是将一个标量映射到实数轴上，而标量在引入了坐标之后又可以表示成多元函数，因此这里切空间上切向量的坐标变换公式就和多元函数的坐标变换公式相同，即
+\beq
+\frac{\partial }{\partial x^{\mu}} = \frac{\partial u^\nu}{\partial x^{\mu}}\frac{\partial}{\partial u^\nu}
+\eeq
+因为切空间上任何一个切矢量都可以表示成基底的线性组合，因此，对于同一个切矢量$v$，它在坐标$x$下的分量$v(x)^\mu$和在坐标$u$下的表象$v(u)^\nu$的关系为
+\beq
+v = v(x)^\mu \frac{\partial}{\partial x^\mu} = v(u)^\nu \frac{\partial}{\partial u^\nu}
+\eeq
+进而利用上面的关系，将等式右边的基换成等式左边的基，从而得到
+\beq
+v(x)^\mu = v(u)^\nu \frac{\partial x^\mu}{\partial u^{\nu}}
+\eeq
+
+对于余切矢量，在另一组坐标$u^\nu$下定义了一组余切空间的基$du^\nu$，它们满足
+\beq
+du^{\nu}\left(\frac{\partial}{\partial u^\mu}\right) = \delta^\nu_\mu = dx^{\nu}\left(\frac{\partial}{\partial x^\mu}\right)
+\eeq
+再利用切矢量基底的变换公式，就得到了余切矢量基底的变换公式
+\beq
+dx^\mu = \frac{\partial x^{\mu}}{\partial u^{\nu}}du^\nu
+\eeq
+进而将任何一个余切矢量使用基底展开，就能得到余切矢量的分量坐标变换公式。
+\section{抽象指标记号}
+可以使用两种方法表示张量，第一种方法当然是使用映射的观点，这种观点论述起来非常麻烦；而第二种方法是直接使用张量的分量来代表张量。在这里我们要注意，之前如果我们不讨论张量的指标升降，我们可以简单的把张量的分量记为$T^{j_1\cdots j_S}_{i_1\cdots i_t}$而不引起歧义。但是如果涉及指标的升降，我们最好将上下标错开，以表明张量对应的映射次序，例如一个$(1,2)$型张量记为$T_c^{\spa ab}$。我们接下来定义一些记号
+\begin{definition}[对称张量]
+  $T\in \mathcal{T}_V(2,0)$是对称的，如果$T(u,v) = T(v,u)$，$\forall u,v \in V$。
+\end{definition}
+\begin{definition}
+  $(2,0)$型张量$T_{ab}$的对称部分记作$T_{(ab)}$，反称部分记作$T_{[ab]}$，定义为
+  \be
+  T_{(ab)} = \frac{1}{2}\left(T_{ab}+T_{(ba)}\right)
+  \ee
+\end{definition}
+一般地，$(l,0)$型张量$T_{a_1\cdots a_l}$的对称部分和反称部分的定义为
+\bea
+T_{(a_1\cdots a_l)} = \frac{1}{l!}\sum_\pi T_{a\pi(1)\cdots a_{\pi(l)}},
+T_{[a_1\cdots a_l]} = \frac{1}{l!}\sum_\pi \epsilon_\pi T_{a\pi(1)\cdots a_{\pi(l)}}
+\eea
+\section{习题1}
+\begin{problem}
+  使用张量变换规律，求出三维欧式度规在求坐标系中全部分量$g_{\mu\nu}^\prime$。
+\end{problem}
+\begin{problem}
+  证明如果$T_{abcd} = T_{a[bc]d} = T_{ab[cd]}$，那么$T_{a[bcd]}$。
+\end{problem}
+\begin{problem}
+  假设有一个$(0,2)$型张量的分量为$V^{\mu\nu}$,考虑两个$(2,0)$型对称和反对称张量的分量$S_{\mu\nu},A_{\mu\nu}$，证明$V^{\mu\nu}S_{\mu\nu} = V^{(\mu\nu)}S_{\mu\nu}$。
+\end{problem}
 
 
 
